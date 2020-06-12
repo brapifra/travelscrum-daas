@@ -18,6 +18,7 @@ service: travelscrum-daas # NOTE: update this with your service name
 # frameworkVersion: "=X.X.X"
 
 plugins:
+  - serverless-dotenv-plugin
   - serverless-plugin-typescript
 
 provider:

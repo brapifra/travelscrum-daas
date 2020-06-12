@@ -5,9 +5,6 @@ import {
   AircraftSeat,
 } from './AircraftRepository';
 
-const AMADEUS_SEATMAP_API_ENDPOINT =
-  'https://test.api.amadeus.com/v1/shopping/seatmaps';
-
 interface AmadeusSeatMapResponse {
   decks: Array<{
     seats: Array<{ number: string; coordinates: { x: number; y: number } }>;
@@ -16,11 +13,9 @@ interface AmadeusSeatMapResponse {
 
 class AmadeusAircraftFinder implements AircraftRepository {
   async find(aircraftCode: string): Promise<Aircraft> {
-    const { data } = await axios.get<AmadeusSeatMapResponse>(
-      `${AMADEUS_SEATMAP_API_ENDPOINT}?flight-orderId=eJzTd9f3DvWNCPAEAAvBAoQ%3D`
-    );
+    const aircraftInfo = await this.fetchAircraftInfo();
 
-    const seats: AircraftSeat[] = data.decks.reduce((acc, deck) => {
+    const seats: AircraftSeat[] = aircraftInfo.decks.reduce((acc, deck) => {
       const deckSeats: AircraftSeat[] = deck.seats.map((seat) => ({
         number: seat.number,
         coordinates: seat.coordinates,
@@ -33,6 +28,19 @@ class AmadeusAircraftFinder implements AircraftRepository {
       code: aircraftCode,
       seats,
     };
+  }
+
+  private async fetchAircraftInfo(): Promise<AmadeusSeatMapResponse> {
+    const { data } = await axios.get<{ data: AmadeusSeatMapResponse[] }>(
+      `${process.env.AMADEUS_SEATMAP_API_ENDPOINT}?flight-orderId=eJzTd9f3DvWNCPAEAAvBAoQ%3D`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.AMADEUS_SEATMAP_API_TOKEN}`,
+        },
+      }
+    );
+
+    return data.data[0];
   }
 }
 

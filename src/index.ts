@@ -1,5 +1,7 @@
 import { APIGatewayProxyHandler } from 'aws-lambda';
 import CountrySummary from './countrySummary/countrySummary';
+import AmadeusAircraftFinder from './aircraft/AmadeusAircraftFinder';
+
 interface EventBody {
   passengers: PassengerDTO[];
   aircraftCode: string;
@@ -20,12 +22,13 @@ interface Itinerary {
 
 const handler: APIGatewayProxyHandler = async (event, context) => {
   const body = parseEventBody(event.body || '{}');
+  const aircraft = await AmadeusAircraftFinder.find(body.aircraftCode);
 
   // const {sitata_risk} = await CountrySummary.getCountryCV19Summary("ES");
 
   return {
     statusCode: 200,
-    body: JSON.stringify(body),
+    body: JSON.stringify(aircraft),
   };
 };
 
