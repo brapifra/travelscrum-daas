@@ -1,0 +1,14 @@
+{
+  "name": "travelscrum-daas",
+  "version": "1.0.0",
+  "repository": "git@github.com:brapifra/travelscrum-daas.git",
+  "private": true,
+  "scripts": {
+    "run-locally": "serverless invoke local --function"
+  },
+  "devDependencies": {
+    "serverless": "^1.72.0",
+    "serverless-plugin-typescript": "^1.1.9",
+    "typescript": "^3.9.5"
+  }
+}
