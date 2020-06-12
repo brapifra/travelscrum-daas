@@ -1,4 +1,4 @@
-export default async function hello(event, context) {
+export default async function (event, context) {
   return {
     statusCode: 200,
     body: JSON.stringify({

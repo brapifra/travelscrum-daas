@@ -4,6 +4,7 @@
   "repository": "git@github.com:brapifra/travelscrum-daas.git",
   "private": true,
   "scripts": {
+    "deploy": "serverless deploy -v",
     "run-locally": "serverless invoke local --function"
   },
   "devDependencies": {
