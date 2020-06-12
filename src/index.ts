@@ -1,5 +1,5 @@
 import { APIGatewayProxyHandler } from 'aws-lambda';
-
+import CountrySummary from './countrySummary/countrySummary';
 interface EventBody {
   passengers: PassengerDTO[];
   aircraftCode: string;
@@ -20,6 +20,8 @@ interface Itinerary {
 
 const handler: APIGatewayProxyHandler = async (event, context) => {
   const body = parseEventBody(event.body || '{}');
+
+  // const {sitata_risk} = await CountrySummary.getCountryCV19Summary("ES");
 
   return {
     statusCode: 200,
