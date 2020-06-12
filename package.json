@@ -8,6 +8,7 @@
     "run-locally": "serverless invoke local --function"
   },
   "devDependencies": {
+    "@types/aws-lambda": "^8.10.56",
     "serverless": "^1.72.0",
     "serverless-plugin-typescript": "^1.1.9",
     "typescript": "^3.9.5"
