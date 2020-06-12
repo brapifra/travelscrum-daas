@@ -2,7 +2,7 @@ import { APIGatewayProxyHandler } from 'aws-lambda';
 
 interface EventBody {
   passengers: PassengerDTO[];
-  aircraft: string;
+  aircraftCode: string;
   itinerary: Itinerary;
 }
 
