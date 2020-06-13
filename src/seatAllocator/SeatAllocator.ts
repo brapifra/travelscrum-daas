@@ -8,12 +8,14 @@ export interface SeatAllocator {
   ): Promise<SeatAllocation>;
 }
 
+export interface PassengerSeat {
+  passengerId: string;
+  groupId: string;
+  seatNumber: string;
+  riskFactor: number;
+}
+
 export interface SeatAllocation {
   id: string;
-  allocations: Array<{
-    passengerId: string;
-    groupId: string;
-    seatNumber: string;
-    riskFactor: number;
-  }>;
+  allocations: Array<PassengerSeat>;
 }

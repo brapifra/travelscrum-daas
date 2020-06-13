@@ -65,16 +65,17 @@ functions:
       - http:
           path: /seat/allocation
           method: post
-  getSeatAllocation:
-    handler: src/lambdas/getSeatAllocation.default
+  getPassengerSeat:
+    handler: src/lambdas/getPassengerSeat.default
     events:
       - http:
-          path: /seat/allocation/{id}
+          path: /passenger/{passengerId}/seat/{seatAllocationId}
           method: get
           request:
             parameters:
               paths:
-                id: true
+                passengerId: true
+                seatAllocationId: true
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
