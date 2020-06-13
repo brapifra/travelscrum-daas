@@ -1,0 +1,11 @@
+{
+    "dev": {
+        "app_function": "bramimosa.app",
+        "profile_name": "default",
+        "project_name": "bramimosa",
+        "runtime": "python3.7",
+        "s3_bucket": "model-bramimosa",
+        "slim_handler": true,
+        "keep_warm": true
+    }
+}
