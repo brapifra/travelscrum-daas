@@ -1,7 +1,11 @@
 import { AircraftSeat } from '../aircraft/AircraftRepository';
+import { Passenger } from '../lambdas/createSeatAllocation';
 
 export interface SeatAllocator {
-  allocate(passengers: any[], seats: AircraftSeat[]): Promise<SeatAllocation>;
+  allocate(
+    passengers: Passenger[],
+    seats: AircraftSeat[]
+  ): Promise<SeatAllocation>;
 }
 
 export interface SeatAllocation {

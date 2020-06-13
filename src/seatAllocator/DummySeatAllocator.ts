@@ -1,15 +1,30 @@
+import { v4 as uuid } from 'uuid';
 import { SeatAllocator, SeatAllocation } from './SeatAllocator';
 import { AircraftSeat } from '../aircraft/AircraftRepository';
+import { Passenger } from '../lambdas/createSeatAllocation';
 
 class DummySeatAllocator implements SeatAllocator {
   async allocate(
-    passengers: any[],
+    passengers: Passenger[],
     seats: AircraftSeat[]
   ): Promise<SeatAllocation> {
     return {
-      id: 'id',
-      allocations: [],
+      id: uuid(),
+      allocations: passengers.map((passenger) => ({
+        passengerId: passenger.id,
+        groupId: passenger.groupId,
+        seatNumber: this.getPassengerSeatNumber(passenger, seats),
+        riskFactor: passenger.riskFactor,
+      })),
     };
+  }
+
+  private getPassengerSeatNumber(
+    passenger: Passenger,
+    seats: AircraftSeat[]
+  ): string {
+    const seatIndex = Math.floor(Math.random() * seats.length);
+    return seats[seatIndex].number;
   }
 }
 

@@ -1,6 +1,6 @@
 import { APIGatewayProxyHandler } from 'aws-lambda';
-import CountrySummary from '../countrySummary/countrySummary';
 import AmadeusAircraftFinder from '../aircraft/AmadeusAircraftFinder';
+import SeatAllocator from '../seatAllocator/DummySeatAllocator';
 
 interface EventBody {
   passengers: PassengerDTO[];
@@ -23,12 +23,14 @@ interface Itinerary {
 const createSeatAllocation: APIGatewayProxyHandler = async (event, context) => {
   const body = parseEventBody(event.body || '{}');
   const aircraft = await AmadeusAircraftFinder.find(body.aircraftCode);
-
-  // const {sitata_risk} = await CountrySummary.getCountryCV19Summary("ES");
+  const seatAllocation = await SeatAllocator.allocate(
+    body.passengers,
+    aircraft.seats
+  );
 
   return {
     statusCode: 200,
-    body: JSON.stringify(aircraft),
+    body: JSON.stringify(seatAllocation),
   };
 };
 
@@ -38,8 +40,9 @@ type ParsedEventBody = Omit<EventBody, 'passengers'> & {
   passengers: Passenger[];
 };
 
-type Passenger = Omit<PassengerDTO, 'dateOfBirth'> & {
+export type Passenger = Omit<PassengerDTO, 'dateOfBirth'> & {
   dateOfBirth: Date;
+  riskFactor: number;
 };
 
 function parseEventBody(rawBody: string): ParsedEventBody {
@@ -50,6 +53,7 @@ function parseEventBody(rawBody: string): ParsedEventBody {
     passengers: body.passengers.map((passenger) => ({
       ...passenger,
       dateOfBirth: new Date(passenger.dateOfBirth),
+      riskFactor: Math.random() * 100,
     })),
   };
 }
