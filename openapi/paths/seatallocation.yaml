@@ -1,0 +1,36 @@
+post:
+  tags:
+    - Allocation
+  summary: To be called when the flight occupancy is known by the DCS.
+  description: Get seat allocation distribution based on risk factor, maximising distancing.
+  operationId: seat
+  responses:
+    "200":
+      description: OK
+      headers:
+        X-Rate-Limit:
+          description: calls per hour allowed by the DCS
+          schema:
+            type: integer
+            format: int32
+        X-Expires-After:
+          $ref: ../components/headers/ExpiresAfter.yaml
+      content:
+        application/json:
+          schema:
+            type: object
+          examples:
+            response:
+              value: { blablabla }
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          example: {
+              flightblabla
+              blablablab
+              blalba,
+            }
+    description: Payload required for seat allocation
+    required: true

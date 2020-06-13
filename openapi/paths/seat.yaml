@@ -1,0 +1,24 @@
+get:
+  tags:
+    - Seat
+  summary: Endpoint called at check-in time.
+  description: Get safest seat for given passenger.
+  operationId: seatsafe
+  responses:
+    "200":
+      description: OK
+      headers:
+        X-Rate-Limit:
+          description: calls per hour allowed by the DCS
+          schema:
+            type: integer
+            format: int32
+        X-Expires-After:
+          $ref: ../components/headers/ExpiresAfter.yaml
+      content:
+        application/json:
+          schema:
+            type: object
+          examples:
+            response:
+              value: { blablabla }
