@@ -4,7 +4,12 @@ export interface SeatAllocator {
   allocate(passengers: any[], seats: AircraftSeat[]): Promise<SeatAllocation>;
 }
 
-export type SeatAllocation = Array<{
-  passengerId: string;
-  seatNumber: string;
-}>;
+export interface SeatAllocation {
+  id: string;
+  allocations: Array<{
+    passengerId: string;
+    groupId: string;
+    seatNumber: string;
+    riskFactor: number;
+  }>;
+}

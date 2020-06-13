@@ -6,7 +6,10 @@ class DummySeatAllocator implements SeatAllocator {
     passengers: any[],
     seats: AircraftSeat[]
   ): Promise<SeatAllocation> {
-    return [];
+    return {
+      id: 'id',
+      allocations: [],
+    };
   }
 }
 
