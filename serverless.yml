@@ -120,3 +120,22 @@ functions:
 #     NewOutput:
 #       Description: "Description for the output"
 #       Value: "Some output value"
+resources: # CloudFormation template syntax from here on.
+      Resources:
+        fligthAllocation:
+          Type: AWS::DynamoDB::Table
+          Properties:
+            TableName: fligthAllocation
+            AttributeDefinitions:
+              - AttributeName: flightId
+                AttributeType: S
+              - AttributeName: passengerId
+                AttributeType: S
+            KeySchema:
+              - AttributeName: flightId
+                KeyType: HASH
+              - AttributeName: passengerId
+                KeyType: RANGE
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
