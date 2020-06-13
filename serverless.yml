@@ -59,12 +59,22 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  index:
-    handler: src/index.default
+  createSeatAllocation:
+    handler: src/lambdas/createSeatAllocation.default
     events:
       - http:
-          path: /
+          path: /seat/allocation
           method: post
+  getSeatAllocation:
+    handler: src/lambdas/getSeatAllocation.default
+    events:
+      - http:
+          path: /seat/allocation/{id}
+          method: get
+          request:
+            parameters:
+              paths:
+                id: true
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
