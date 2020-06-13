@@ -1,4 +1,4 @@
 ## Run lambda function locally
 ```bash
-yarn run-locally nameOfTheFunction # e.g. yarn run-locally hello
+yarn run-locally nameOfTheFunction # e.g. yarn run-locally createSeatAllocation
 ```

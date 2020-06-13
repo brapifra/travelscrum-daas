@@ -1,6 +1,6 @@
 import { APIGatewayProxyHandler } from 'aws-lambda';
-import CountrySummary from './countrySummary/countrySummary';
-import AmadeusAircraftFinder from './aircraft/AmadeusAircraftFinder';
+import CountrySummary from '../countrySummary/countrySummary';
+import AmadeusAircraftFinder from '../aircraft/AmadeusAircraftFinder';
 
 interface EventBody {
   passengers: PassengerDTO[];
@@ -20,7 +20,7 @@ interface Itinerary {
   arrival: string;
 }
 
-const handler: APIGatewayProxyHandler = async (event, context) => {
+const createSeatAllocation: APIGatewayProxyHandler = async (event, context) => {
   const body = parseEventBody(event.body || '{}');
   const aircraft = await AmadeusAircraftFinder.find(body.aircraftCode);
 
@@ -32,7 +32,7 @@ const handler: APIGatewayProxyHandler = async (event, context) => {
   };
 };
 
-export default handler;
+export default createSeatAllocation;
 
 type ParsedEventBody = Omit<EventBody, 'passengers'> & {
   passengers: Passenger[];
