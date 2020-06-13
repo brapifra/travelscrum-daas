@@ -1,0 +1,95 @@
+openapi: 3.0.2
+info:
+  version: 1.0.0
+  title: DaaS - Distancing as a Service
+  contact:
+    name: S Andreo
+    email: samuanv@gmail.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+  x-logo:
+    url: 'https://redocly.github.io/openapi-template/logo.png'
+  description: >
+    # Introduction
+
+    DaaS - Distance as a Service is a service that a more efficient and safer
+    way of boarding a plane. DaaS algorithm assigns the safest seat for each
+    passenger at check-in time. It increases the passenger's trust and reduces
+    costs for airlines since the boarding process is faster.
+
+
+    # API
+
+    The development of this project and API is part of TravelScrum Hackathon and
+    is just for *demo purposes*.
+externalDocs:
+  description: Find out the main DaaS repository.
+  url: 'https://github.com/brapifra/travelscrum-daas'
+paths:
+  /seatallocation:
+    post:
+      summary: To be called when the flight occupancy is known by the DCS.
+      description: >-
+        Get seat allocation distribution based on risk factor, maximising
+        distancing.
+      operationId: seat
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the DCS
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              $ref: '#/components/headers/ExpiresAfter'
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                response:
+                  value:
+                    blablabla: null
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+              example:
+                flightblabla blablablab blalba: null
+        description: Payload required for seat allocation
+        required: true
+  '/seat/:id':
+    get:
+      summary: Endpoint called at check-in time.
+      description: Get safest seat for given passenger.
+      operationId: seatsafe
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the DCS
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              $ref: '#/components/headers/ExpiresAfter'
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                response:
+                  value:
+                    blablabla: null
+components:
+  headers:
+    ExpiresAfter:
+      description: date in UTC when token expires
+      schema:
+        type: string
+        format: date-time
