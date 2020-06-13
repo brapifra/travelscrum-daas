@@ -6,7 +6,8 @@
   "scripts": {
     "start-frontend": "parcel frontend/public/index.html",
     "deploy": "serverless deploy -v",
-    "run-locally": "serverless invoke local --function"
+    "run-locally": "serverless invoke local --function",
+    "build-docs": "redoc-cli bundle openapi/openapi.yaml"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.56",

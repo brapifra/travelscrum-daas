@@ -1,0 +1,52 @@
+openapi: 3.0.2
+info:
+  version: 1.0.0
+  title: DaaS - Distancing as a Service
+  contact:
+    name: S Andreo
+    email: samuanv@gmail.com
+  license:
+    name: Apache 2.0
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+  x-logo:
+    url: "https://cdn4.iconfinder.com/data/icons/social-distancing/512/coronavirus-13-512.png"
+  description: >
+    # Introduction
+
+    DaaS - Distance as a Service is a service that a more efficient and safer way of boarding a plane.
+    DaaS algorithm assigns the safest seat for each passenger at check-in time. It increases the passenger's trust and reduces costs for
+    airlines since the boarding process is faster.
+
+
+    # API
+
+    The development of this project and API is part of TravelScrum Hackathon and is just for *demo purposes*.
+
+externalDocs:
+  description: Find out the main DaaS repository.
+  url: "https://github.com/brapifra/travelscrum-daas"
+# servers:
+#   - url: 'http://example.com/api/v1'
+#   - url: 'https://example.com/api/v1'
+paths:
+  /seatallocation:
+    $ref: paths/seatallocation.yaml
+  /seat/:id:
+    $ref: paths/seat.yaml
+# components:
+#   securitySchemes:
+#     main_auth:
+#       type: oauth2
+#       flows:
+#         implicit:
+#           authorizationUrl: 'http://example.com/api/oauth/dialog'
+#           scopes:
+#             'read:users': read users info
+#             'write:users': modify or remove users
+#     api_key:
+#       type: apiKey
+#       in: header
+#       name: api_key
+#     basic_auth:
+#       type: http
+#       scheme: basic
