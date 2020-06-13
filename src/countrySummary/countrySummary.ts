@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 interface CV19Summary {
   // Cases less deaths and recoveries
@@ -19,15 +19,23 @@ interface CV19Summary {
 }
 
 class CountrySummary {
-  async getCountryCV19Summary(countryCode: string): Promise<CV19Summary> {
-    const {
-      data,
-    } = await axios.get(
-      `https://www.sitata.com/api/v2/countries/SK/covid19_summary`,
-      { headers: { Authorization: `TKN ${process.env.SITATA_API_KEY}` } }
-    );
+  private cachedPromises: {
+    [countryCode: string]: Promise<{ data: { summary: CV19Summary } }>;
+  } = {};
 
-    const { summary } = data;
+  async getCountryCV19Summary(countryCode: string): Promise<CV19Summary> {
+    const promise =
+      this.cachedPromises[countryCode] ||
+      axios.get(
+        `https://www.sitata.com/api/v2/countries/${countryCode}/covid19_summary`,
+        { headers: { Authorization: `TKN ${process.env.SITATA_API_KEY}` } }
+      );
+
+    this.cachedPromises[countryCode] = promise;
+
+    const {
+      data: { summary },
+    } = await promise;
 
     return summary;
   }
