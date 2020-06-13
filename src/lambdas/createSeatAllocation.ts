@@ -42,7 +42,6 @@ type ParsedEventBody = Omit<EventBody, 'passengers'> & {
 
 export type Passenger = Omit<PassengerDTO, 'dateOfBirth'> & {
   dateOfBirth: Date;
-  riskFactor: number;
 };
 
 function parseEventBody(rawBody: string): ParsedEventBody {
@@ -53,7 +52,6 @@ function parseEventBody(rawBody: string): ParsedEventBody {
     passengers: body.passengers.map((passenger) => ({
       ...passenger,
       dateOfBirth: new Date(passenger.dateOfBirth),
-      riskFactor: Math.random() * 100,
     })),
   };
 }

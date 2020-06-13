@@ -14,7 +14,7 @@ class DummySeatAllocator implements SeatAllocator {
         passengerId: passenger.id,
         groupId: passenger.groupId,
         seatNumber: this.getPassengerSeatNumber(passenger, seats),
-        riskFactor: passenger.riskFactor,
+        riskFactor: Math.floor(Math.random() * 100),
       })),
     };
   }
