@@ -4,17 +4,25 @@
   "repository": "git@github.com:brapifra/travelscrum-daas.git",
   "private": true,
   "scripts": {
+    "start-frontend": "parcel frontend/public/index.html",
     "deploy": "serverless deploy -v",
     "run-locally": "serverless invoke local --function"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.56",
+    "@types/react": "^16.9.36",
+    "@types/react-dom": "^16.9.8",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "parcel-bundler": "^1.12.4",
     "serverless": "^1.72.0",
     "serverless-dotenv-plugin": "^2.4.2",
     "serverless-plugin-typescript": "^1.1.9",
     "typescript": "^3.9.5"
   },
   "dependencies": {
-    "axios": "^0.19.2"
+    "axios": "^0.19.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
   }
 }

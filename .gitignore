@@ -8,3 +8,7 @@ jspm_packages
 .env
 .vscode
 .env.development
+
+# parcel directories
+.cache
+dist
