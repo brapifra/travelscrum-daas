@@ -76,6 +76,10 @@ class DummySeatAllocator implements SeatAllocator {
     seats: AircraftSeat[]
   ): PassengerSeat[] {
     const copyOfSeats = [...seats];
+    const numberOfFreeSeatsBetweenGroups = this.getNumberOfFreeSeatsBetweenGroups(
+      groupsSortedByRisk,
+      seats
+    );
 
     const passengersSeats = groupsSortedByRisk.reduce((acc, group) => {
       const groupAllocation: PassengerSeat[] = group.map((passenger) => {
@@ -88,13 +92,32 @@ class DummySeatAllocator implements SeatAllocator {
         };
       });
 
-      // Ensure one free seat between groups
-      copyOfSeats.pop();
+      Array(numberOfFreeSeatsBetweenGroups)
+        .fill(undefined)
+        .forEach(() => {
+          copyOfSeats.pop();
+        });
 
       return [...acc, ...groupAllocation];
     }, [] as PassengerSeat[]);
 
     return passengersSeats;
+  }
+
+  private getNumberOfFreeSeatsBetweenGroups(
+    groupsSortedByRisk: PassengerWithRiskFactor[][],
+    seats: AircraftSeat[]
+  ) {
+    const numberOfPassengers = groupsSortedByRisk.reduce(
+      (acc, group) => acc + group.length,
+      0
+    );
+    const freeSeats = seats.length - numberOfPassengers;
+    const numberOfGroups = Object.keys(groupsSortedByRisk).length;
+    const numberOfFreeSeatsBetweenGroups =
+      freeSeats / Math.max(numberOfGroups - 1, 1);
+
+    return Math.floor(numberOfFreeSeatsBetweenGroups);
   }
 }
 
