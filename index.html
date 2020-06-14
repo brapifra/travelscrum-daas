@@ -201,7 +201,7 @@
                                 <div class="md:w-1/3"></div>
                                 <div class="md:w-2/3">
                                     <button class="shadow bg-orange-700 hover:bg-orange-500 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button"  onclick="allocate(this)">
-                                        Allocate!
+                                        Allocate seats
                                     </button>
                                     <p class="pl-2 py-2 text-sm text-gray-600">Note: we rely in 3rd party systems, it might take a few seconds</p>
                                 </div>
@@ -249,8 +249,9 @@
                         </div>
                         <div class="md:w-2/3" class="border-solid border-black">
                             <pre class="prettyprint">
-<code>{ PassengerID: 1
-        SeatID: 1
+<code>{
+    "passengerId": 1,
+    "seatAllocationId": 1
 }</code></pre>
                         </div>
                     </div>
@@ -258,7 +259,7 @@
                                 <div class="md:w-1/3"></div>
                                 <div class="md:w-2/3">
                                     <button class="shadow bg-orange-700 hover:bg-orange-500 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button"  onclick="getPassengerSeat(this)">
-                                        Allocate!
+                                        Get passenger seat
                                     </button>
                                     <p class="pl-2 py-2 text-sm text-gray-600">Click allocate to try out the endpoint. Note: it will take a few seconds to return the response</p>
                                 </div>
