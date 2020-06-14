@@ -65,12 +65,14 @@ functions:
       - http:
           path: /seat/allocation
           method: post
+          cors: true
   getPassengerSeat:
     handler: src/lambdas/getPassengerSeat.default
     events:
       - http:
           path: /passenger/{passengerId}/seat/{seatAllocationId}
           method: get
+          cors: true
           request:
             parameters:
               paths:
