@@ -25,8 +25,8 @@ provider:
   name: aws
   runtime: nodejs12.x
 
-# you can overwrite defaults here
-#  stage: dev
+  # you can overwrite defaults here
+  #  stage: dev
   region: eu-west-2
 
 # you can add statements to the Lambda function's IAM Role here
@@ -78,6 +78,17 @@ functions:
               paths:
                 passengerId: true
                 seatAllocationId: true
+  getAllocation:
+    handler: src/lambdas/getAllocation.default
+    events:
+      - http:
+          path: /seat/allocation/{seatAllocationId}
+          method: get
+          cors: true
+          request:
+            parameters:
+              paths:
+                seatAllocationId: true
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
@@ -123,21 +134,21 @@ functions:
 #       Description: "Description for the output"
 #       Value: "Some output value"
 resources: # CloudFormation template syntax from here on.
-      Resources:
-        fligthAllocation:
-          Type: AWS::DynamoDB::Table
-          Properties:
-            TableName: fligthAllocation
-            AttributeDefinitions:
-              - AttributeName: flightId
-                AttributeType: S
-              - AttributeName: passengerId
-                AttributeType: S
-            KeySchema:
-              - AttributeName: flightId
-                KeyType: HASH
-              - AttributeName: passengerId
-                KeyType: RANGE
-            ProvisionedThroughput:
-              ReadCapacityUnits: 1
-              WriteCapacityUnits: 1
+  Resources:
+    fligthAllocation:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: fligthAllocation
+        AttributeDefinitions:
+          - AttributeName: flightId
+            AttributeType: S
+          - AttributeName: passengerId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: flightId
+            KeyType: HASH
+          - AttributeName: passengerId
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
