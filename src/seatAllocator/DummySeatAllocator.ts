@@ -54,7 +54,7 @@ class DummySeatAllocator implements SeatAllocator {
     const groups: {
       [groupId: string]: PassengerWithRiskFactor[];
     } = passengersWithRiskFactor.reduce((acc, passenger) => {
-      const groupId = passenger.groupId || 'default_group';
+      const groupId = passenger.groupId || uuid();
       const groupPassengers = acc[groupId] || [];
       return { ...acc, [groupId]: [...groupPassengers, passenger] };
     }, {});
