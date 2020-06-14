@@ -107,82 +107,8 @@
                 </ul>
             </div>
         </div>
-        <!--Section container script-->
-        <script>
-            const allocate = async target => {
-                const body = {
-                    "passengers": [
-                        {
-                            "id": "father",
-                            "groupId": "family",
-                            "itinerary": [
-                                {
-                                    "departure": "ES",
-                                    "arrival": "GB"
-                                }
-                            ]
-                        },
-                        {
-                            "id": "son",
-                            "groupId": "family",
-                            "itinerary": [
-                                {
-                                    "departure": "ES",
-                                    "arrival": "GB"
-                                }
-                            ]
-                        },
-                        {
-                            "id": "businesswoman",
-                            "itinerary": [
-                                {
-                                    "departure": "SK",
-                                    "arrival": "ES"
-                                },
-                                {
-                                    "departure": "ES",
-                                    "arrival": "GB"
-                                }
-                            ]
-                        },		{
-                            "id": "businessman",
-                            "itinerary": [
-                                {
-                                    "departure": "CH",
-                                    "arrival": "ES"
-                                },
-                                {
-                                    "departure": "ES",
-                                    "arrival": "GB"
-                                }
-                            ]
-                        }
-                    ],
-                    "aircraft": "333",
-                    "itinerary": {
-                        "departure": "ES",
-                        "arrival": "GB"
-                    }
-                }
-                
-                target.innerHTML="Allocating...";
-                const response = await fetch('https://d606brmdeh.execute-api.eu-west-2.amazonaws.com/dev/seat/allocation', {
-                    method: 'post',
-                    body: JSON.stringify(body),
-                    mode: 'cors'
-                });
-                const data = await response.json();
-                console.log(data)
-    
-                target.innerHTML="Allocate!";
-                const allocationResponse = document.getElementById('allocationResponse');
-    
-                allocationResponse.parentElement.classList.remove('prettyprinted');
-                allocationResponse.append(JSON.stringify(data, null, 2));
-                PR.prettyPrint();
-            }
-    
-        </script>
+        <!--Loads the script that makes tha api calls-->
+        <script src="apiRunner.js"></script>
         <!--Section container api test-->
         <section class="w-full lg:w-4/5 main-section">
             <!--Title-->
@@ -194,10 +120,9 @@
             </div>
             <!--/Card-->
 
+            <!--Seat Allocation-->
             <div id='section2' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
-
                 <form>
-
                     <div class="md:flex mb-6">
                         <div class="md:w-1/3">
                             <label class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4" for="my-textfield">
@@ -301,7 +226,7 @@
                             </div>
                     </form>
             </div>
-
+            <!--/Seat Allocation-->
 
             <!--divider-->
             <hr class="bg-gray-300 my-12">
@@ -315,96 +240,32 @@
             </div>
             <!--/Card-->
 
-            <div id='section2' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
-
+            <div id='section3' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
                 <form>
-
                     <div class="md:flex mb-6">
                         <div class="md:w-1/3">
-                            <label class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4" for="my-textfield">
-                                Request Body:
-                            </label>
-                            <p class="pl-2 py-2 text-sm text-gray-600">Anonymised Passenger Data:
+                            <p class="pl-2 py-2 text-sm text-gray-600">Arguments:
                                 <ul class="pl-6 text-sm text-gray-600">
                                     <li>
-                                        Age
+                                        Passenger ID
                                     </li>
                                     <li>
-                                        Booking
-                                    </li>
-                                    <li>
-                                        Service Special Requests
-                                    </li>
-                                    <li>
-                                        Itinerary
+                                        Seat ID
                                     </li>
                                 </ul>
                             </p>
-                            <p class="pl-2 py-2 text-sm text-gray-600">Aircraft ID</p>
-                            <p class="pl-2 py-2 text-sm text-gray-600">Flight Details</p>
                         </div>
                         <div class="md:w-2/3" class="border-solid border-black">
                             <pre class="prettyprint">
-<code>{
-    "passengers": [
-        {
-            "id": "father",
-            "groupId": "family",
-            "itinerary": [
-                {
-                    "departure": "ES",
-                    "arrival": "GB"
-                }
-            ]
-        },
-        {
-            "id": "son",
-            "groupId": "family",
-            "itinerary": [
-                {
-                    "departure": "ES",
-                    "arrival": "GB"
-                }
-            ]
-        },
-        {
-            "id": "businesswoman",
-            "itinerary": [
-                {
-                    "departure": "SK",
-                    "arrival": "ES"
-                },
-                {
-                    "departure": "ES",
-                    "arrival": "GB"
-                }
-            ]
-        },		{
-            "id": "businessman",
-            "itinerary": [
-                {
-                    "departure": "CH",
-                    "arrival": "ES"
-                },
-                {
-                    "departure": "ES",
-                    "arrival": "GB"
-                }
-            ]
-        }
-    ],
-    "aircraft": "333",
-    "itinerary": {
-        "departure": "ES",
-        "arrival": "GB"
-    }
+<code>{ PassengerID: 1
+        SeatID: 1
 }</code></pre>
                         </div>
                     </div>
                             <div class="md:flex md:items-center">
                                 <div class="md:w-1/3"></div>
                                 <div class="md:w-2/3">
-                                    <button class="shadow bg-orange-700 hover:bg-orange-500 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button"  onclick="allocate(this)">
+                                    <button class="shadow bg-orange-700 hover:bg-orange-500 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button"  onclick="getPassengerSeat(this)">
                                         Allocate!
                                     </button>
                                     <p class="pl-2 py-2 text-sm text-gray-600">Click allocate to try out the endpoint. Note: it will take a few seconds to return the response</p>
@@ -417,7 +278,7 @@
                                     </label>
                                 </div>
                                 <div class="md:w-2/3" class="border-solid border-black">
-                                    <pre class="prettyprint" id="prettyprint" ><code id="allocationResponse"></code></pre>
+                                    <pre class="prettyprint" id="prettyprint" ><code id="getPassengerSeatResponse"></code></pre>
                                 </div>
                             </div>
                     </form>
@@ -467,77 +328,6 @@
 
             <!--divider-->
             <hr class="bg-gray-300 my-12">
-
-            <!--Title-->
-            <h2 class="font-sans font-bold break-normal text-gray-700 px-2 pb-8 text-xl">Section 4</h2>
-
-            <!--Card-->
-            <div id='section4' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
-
-                <form>
-
-                    <div class="md:flex mb-6">
-                        <div class="md:w-1/3">
-                            <label class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4" for="my-radio">
-                                Radio Buttons
-                            </label>
-                        </div>
-                        <div class="md:w-2/3">
-                            <div class="mt-2">
-                                <label class="inline-flex items-center">
-                                    <input type="radio" class="form-radio text-indigo-600" name="radioOption" value="A">
-                                    <span class="ml-2">Radio A</span>
-                                </label>
-                                <label class="inline-flex items-center ml-6">
-                                    <input type="radio" class="form-radio" name="radioOption" value="B">
-                                    <span class="ml-2">Radio B</span>
-                                </label>
-                            </div>
-                            <p class="py-2 text-sm text-gray-600">add notes about populating the field</p>
-                        </div>
-                    </div>
-
-                    <div class="md:flex mb-6">
-                        <div class="md:w-1/3">
-                            <label class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4" for="my-checkbox">
-                                Checkboxes
-                            </label>
-                        </div>
-                        <div class="md:w-2/3">
-                            <div>
-                                <label class="inline-flex items-center">
-                                    <input type="checkbox" class="form-checkbox text-indigo-600" checked>
-                                    <span class="ml-2">Option 1</span>
-                                </label>
-                            </div>
-                            <div>
-                                <label class="inline-flex items-center">
-                                    <input type="checkbox" class="form-checkbox text-green-500" checked>
-                                    <span class="ml-2">Option 2</span>
-                                </label>
-                            </div>
-                            <div>
-                                <label class="inline-flex items-center">
-                                    <input type="checkbox" class="form-checkbox text-pink-600" checked>
-                                    <span class="ml-2">Option 3</span>
-                                </label>
-                            </div>
-                            <p class="py-2 text-sm text-gray-600">add notes about populating the field</p>
-                        </div>
-                    </div>
-
-                    <div class="md:flex md:items-center">
-                        <div class="md:w-1/3"></div>
-                        <div class="md:w-2/3">
-                            <button class="shadow bg-orange-700 hover:bg-orange-500 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
-                                Save
-                            </button>
-                        </div>
-                    </div>
-                </form>
-
-            </div>
-            <!--/Card-->
 
             <!--divider-->
             <hr class="bg-gray-300 my-12">
