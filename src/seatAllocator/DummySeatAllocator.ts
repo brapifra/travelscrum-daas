@@ -1,24 +1,36 @@
 import { v4 as uuid } from 'uuid';
-import { SeatAllocator, SeatAllocation } from './SeatAllocator';
+import { SeatAllocator, SeatAllocation, PassengerSeat } from './SeatAllocator';
 import { AircraftSeat } from '../aircraft/AircraftRepository';
 import { Passenger } from '../lambdas/createSeatAllocation';
 import CountrySummary from '../countrySummary/countrySummary';
+
+interface PassengerWithRiskFactor extends Passenger {
+  riskFactor: number;
+}
 
 class DummySeatAllocator implements SeatAllocator {
   async allocate(
     passengers: Passenger[],
     seats: AircraftSeat[]
   ): Promise<SeatAllocation> {
-    const riskFactorOfPassengers = await this.getRiskFactorOfPassengers(passengers);
+    const riskFactorOfPassengers = await this.getRiskFactorOfPassengers(
+      passengers
+    );
+
+    const passengersWithRiskFactor: PassengerWithRiskFactor[] = passengers.map(
+      (passenger, index) => ({
+        ...passenger,
+        riskFactor: riskFactorOfPassengers[index],
+      })
+    );
+
+    const groupsSortedByRisk = this.getGroupsSortedByRiskFactor(
+      passengersWithRiskFactor
+    );
 
     return {
       id: uuid(),
-      allocations: passengers.map((passenger, index) => ({
-        passengerId: passenger.id,
-        groupId: passenger.groupId,
-        seatNumber: this.getPassengerSeatNumber(passenger, seats),
-        riskFactor: riskFactorOfPassengers[index],
-      })),
+      allocations: this.generateSeatAllocations(groupsSortedByRisk, seats),
     };
   }
 
@@ -36,12 +48,76 @@ class DummySeatAllocator implements SeatAllocator {
     );
   }
 
-  private getPassengerSeatNumber(
-    passenger: Passenger,
+  private getGroupsSortedByRiskFactor(
+    passengersWithRiskFactor: PassengerWithRiskFactor[]
+  ): PassengerWithRiskFactor[][] {
+    const groups: {
+      [groupId: string]: PassengerWithRiskFactor[];
+    } = passengersWithRiskFactor.reduce((acc, passenger) => {
+      const groupId = passenger.groupId || uuid();
+      const groupPassengers = acc[groupId] || [];
+      return { ...acc, [groupId]: [...groupPassengers, passenger] };
+    }, {});
+
+    const groupsSortedByRisk = Object.values(groups).sort(
+      (leftGroup, rightGroup) =>
+        this.getGroupRiskFactor(rightGroup) - this.getGroupRiskFactor(leftGroup)
+    );
+
+    return groupsSortedByRisk;
+  }
+
+  private getGroupRiskFactor(group: PassengerWithRiskFactor[]): number {
+    return group.reduce((acc, passenger) => acc + passenger.riskFactor, 0);
+  }
+
+  private generateSeatAllocations(
+    groupsSortedByRisk: PassengerWithRiskFactor[][],
     seats: AircraftSeat[]
-  ): string {
-    const seatIndex = Math.floor(Math.random() * seats.length);
-    return seats[seatIndex].number;
+  ): PassengerSeat[] {
+    const copyOfSeats = [...seats];
+    const numberOfFreeSeatsBetweenGroups = this.getNumberOfFreeSeatsBetweenGroups(
+      groupsSortedByRisk,
+      seats
+    );
+
+    const passengersSeats = groupsSortedByRisk.reduce((acc, group) => {
+      const groupAllocation: PassengerSeat[] = group.map((passenger) => {
+        const passengerSeat = copyOfSeats.pop();
+        return {
+          passengerId: passenger.id,
+          groupId: passenger.groupId,
+          riskFactor: passenger.riskFactor,
+          seatNumber: passengerSeat?.number || 'Not available',
+        };
+      });
+
+      Array(numberOfFreeSeatsBetweenGroups)
+        .fill(undefined)
+        .forEach(() => {
+          copyOfSeats.pop();
+        });
+
+      return [...acc, ...groupAllocation];
+    }, [] as PassengerSeat[]);
+
+    return passengersSeats;
+  }
+
+  private getNumberOfFreeSeatsBetweenGroups(
+    groupsSortedByRisk: PassengerWithRiskFactor[][],
+    seats: AircraftSeat[]
+  ) {
+    const numberOfPassengers = groupsSortedByRisk.reduce(
+      (acc, group) => acc + group.length,
+      0
+    );
+    const freeSeats = seats.length - numberOfPassengers;
+    const numberOfGroups = Object.keys(groupsSortedByRisk).length;
+    const numberOfFreeSeatsBetweenGroups =
+      freeSeats / Math.max(numberOfGroups - 1, 1);
+
+    return Math.floor(numberOfFreeSeatsBetweenGroups);
   }
 }
 
