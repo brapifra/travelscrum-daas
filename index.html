@@ -322,9 +322,13 @@
                     });
                     const data = await response.json();
                     console.log(data)
-                    target.innerHTML="Allocate!";
 
-                    document.getElementById('allocationResponse').append(JSON.stringify(data, null, 2))
+                    target.innerHTML="Allocate!";
+                    const allocationResponse = document.getElementById('allocationResponse');
+
+                    allocationResponse.parentElement.classList.remove('prettyprinted');
+                    allocationResponse.append(JSON.stringify(data, null, 2));
+                    PR.prettyPrint();
                 }
 
             </script>
