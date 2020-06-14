@@ -88,3 +88,21 @@ const getPassengerSeat = async target => {
     allocationResponse.append(JSON.stringify(data, null, 2));
     PR.prettyPrint();
 }
+
+const setMapAllocation = async target => {
+    const endpoint = 'https://d606brmdeh.execute-api.eu-west-2.amazonaws.com/dev/seat/allocation/234324'
+    target.innerHTML="Allocating...";
+    const response = await fetch(endpoint, {
+        method: 'get',
+        mode: 'cors'
+    });
+    const data = await response.json();
+    console.log(data)
+
+    target.innerHTML="Allocate!";
+    const allocationResponse = document.getElementById('setMapAllocation');
+
+    allocationResponse.parentElement.classList.remove('prettyprinted');
+    allocationResponse.append(JSON.stringify(data, null, 2));
+    PR.prettyPrint();
+}
