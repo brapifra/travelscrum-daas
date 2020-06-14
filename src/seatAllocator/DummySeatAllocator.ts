@@ -61,7 +61,7 @@ class DummySeatAllocator implements SeatAllocator {
 
     const groupsSortedByRisk = Object.values(groups).sort(
       (leftGroup, rightGroup) =>
-        this.getGroupRiskFactor(leftGroup) - this.getGroupRiskFactor(rightGroup)
+        this.getGroupRiskFactor(rightGroup) - this.getGroupRiskFactor(leftGroup)
     );
 
     return groupsSortedByRisk;
