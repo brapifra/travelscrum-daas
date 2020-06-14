@@ -8,8 +8,8 @@ const getSeatAllocation: APIGatewayProxyHandler = async (event, context) => {
   const randomPassengerSeat: PassengerSeat = {
     passengerId,
     groupId: uuid(),
-    seatNumber: `${Math.round(Math.random() * 50)}B`,
-    riskFactor: Math.round(Math.random() * 100),
+    seatNumber: `${Math.round(Math.random() * 50)}${getRandomSeatLetter()}`,
+    riskFactor: Math.random() * 100,
   };
 
   return {
@@ -23,3 +23,10 @@ const getSeatAllocation: APIGatewayProxyHandler = async (event, context) => {
 };
 
 export default getSeatAllocation;
+
+const HARDCODED_SEAT_LETTERS = ['A', 'B', 'C', 'D', 'E', 'F'];
+function getRandomSeatLetter() {
+  return HARDCODED_SEAT_LETTERS[
+    Math.floor(Math.random() * HARDCODED_SEAT_LETTERS.length)
+  ];
+}
