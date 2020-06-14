@@ -53,6 +53,7 @@ const allocate = async target => {
             "arrival": "GB"
         }
     }
+    const previousLabel = target.textContent;
     const endpoint = 'https://d606brmdeh.execute-api.eu-west-2.amazonaws.com/dev/seat/allocation';
     target.innerHTML="Allocating...";
     const response = await fetch(endpoint, {
@@ -63,17 +64,18 @@ const allocate = async target => {
     const data = await response.json();
     console.log(data)
 
-    target.innerHTML="Allocate!";
+    target.innerHTML= previousLabel;
     const allocationResponse = document.getElementById('allocationResponse');
 
     allocationResponse.parentElement.classList.remove('prettyprinted');
-    allocationResponse.append(JSON.stringify(data, null, 2));
+    allocationResponse.innerHTML = (JSON.stringify(data, null, 2));
     PR.prettyPrint();
 }
 
 const getPassengerSeat = async target => {
+    const previousLabel = target.textContent;
     const endpoint = 'https://d606brmdeh.execute-api.eu-west-2.amazonaws.com/dev/passenger/1/seat/1'
-    target.innerHTML="Allocating...";
+    target.innerHTML="Fetching...";
     const response = await fetch(endpoint, {
         method: 'get',
         mode: 'cors'
@@ -81,11 +83,11 @@ const getPassengerSeat = async target => {
     const data = await response.json();
     console.log(data)
 
-    target.innerHTML="Allocate!";
+    target.innerHTML= previousLabel;
     const allocationResponse = document.getElementById('getPassengerSeatResponse');
 
     allocationResponse.parentElement.classList.remove('prettyprinted');
-    allocationResponse.append(JSON.stringify(data, null, 2));
+    allocationResponse.innerHTML = (JSON.stringify(data, null, 2));
     PR.prettyPrint();
 }
 
